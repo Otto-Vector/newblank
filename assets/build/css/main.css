@@ -1,0 +1,6 @@
+input, button, select {
+  outline: 0;
+  border: none; }
+
+body {
+  background-image: url("../img/background.gif"); }
