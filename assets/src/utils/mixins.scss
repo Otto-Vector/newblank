@@ -1,0 +1,118 @@
+// px to rem
+@function rem($pixels, $context: $mainFontSize) {
+  @if (unitless($pixels)) {
+    $pixels: $pixels * 1px;
+  }
+  @if (unitless($context)) {
+    $context: $context * 1px;
+  }
+  @return $pixels / $context * 1rem;
+}
+
+//позволяет вставить строку size(ширина,высота)
+@mixin size($width,$height: $width) {
+  width: $width;
+  height: $height;
+}
+//позволяет передавать все разновидности placeholder()
+@mixin placeholder {
+  &::placeholder {@content; opacity: 1;}
+  &::-webkit-input-placeholder {@content; opacity: 1;}
+  &:-moz-placeholder           {@content; opacity: 1;}
+  &::-moz-placeholder          {@content; opacity: 1;}
+  &:-ms-input-placeholder      {@content; opacity: 1;}
+}
+
+//миксин для плавности
+@mixin duration($sec: $duration) {
+  transition-duration:$sec;
+}
+
+//миксин, чтобы спрятать что-нибудь
+@mixin invisible {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  border: 0;
+  padding: 0;
+  clip: rect(0 0 0 0);
+  overflow: hidden;
+}
+//////////////////////////////////////
+//- Когда вы используете ::before и ::after, вы всегда нуждаетесь в этих трех строчках кода. Используя этот миксин, вы сохраните свое время на их написание.
+@mixin pseudo($display: block, $pos: absolute, $content: ''){
+  content: $content;
+  display: $display;
+  position: $pos;
+}
+// Смотрите ниже пример использованя миксина без каких-либо аргументов.
+// div::after {
+//   @include pseudo;
+//   top: -1rem; left: -1rem;
+//   width: 1rem; height: 1rem;
+// }
+
+// Мы используем этот миксин для создания масштабируемых элементов(обычно изображения/картинки заднего фона), чтобы поддерживать соотношение.
+@mixin responsive-ratio($x,$y, $pseudo: false) {
+  $padding: unquote( ( $y / $x ) * 100 + '%' );
+  @if $pseudo {
+   &:before {
+    @include pseudo($pos: relative);
+    width: 100%;
+    padding-top: $padding;
+   }
+  } @else {
+   padding-top: $padding;
+  }
+}
+// Например, вы можете написать код ниже и ваш блок будет иметь соотношение, которое обычно используется в видео.
+// div {
+//   @include responsive-ratio(16,9);
+// }
+
+
+// CSS треугольники
+// Этот миксин берет на себя все хлопоты по созданию треугольников,
+// вы только задаете цвет, размер, направление и все.
+@mixin css-triangle($color, $direction, $size: 6px, $position: absolute, $round: false){
+  @include pseudo($pos: $position);
+  width: 0;
+  height: 0;
+  @if $round {
+    border-radius: 3px;
+  }
+  @if $direction == down {
+    border-left: $size solid transparent;
+    border-right: $size solid transparent;
+    border-top: $size solid $color;
+    margin-top: 0 - round( $size / 2.5 );
+  } @else if $direction == up {
+    border-left: $size solid transparent;
+    border-right: $size solid transparent;
+    border-bottom: $size solid $color;
+    margin-bottom: 0 - round( $size / 2.5 );
+  } @else if $direction == right {
+    border-top: $size solid transparent;
+    border-bottom: $size solid transparent;
+    border-left: $size solid $color;
+    margin-right: -$size;
+  } @else if  $direction == left {
+    border-top: $size solid transparent;
+    border-bottom: $size solid transparent;
+    border-right: $size solid $color;
+    margin-left: -$size;
+  }
+}
+
+//Truncate
+//Добавить усечение к элементу не так просто, как кажется,
+// хотя это экономит время, когда вы включаете миксин,
+// вы должны только указать границу и максимальную ширину.
+@mixin truncate($truncation-boundary) {
+  max-width: $truncation-boundary;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+/////////////////////////////////////////

@@ -4,8 +4,7 @@
 
 let string = 'в главном работает!';
 // Импортируем другие js-файлы
-string = 'другое';
-string = 'из индекса'
+//= './templates/library/blocks-library.js'
 // = './templates/blocks/index/index.js'
 // = './two.js'
 window.onload = init

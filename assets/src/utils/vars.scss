@@ -1,0 +1,37 @@
+// Font
+$headerFont              : Quicksand-Bold, Helvetica, sans-serif, Arial;
+$mainFont                : Montserrat, Helvetica, Arial, sans-serif;
+
+// Main color
+$dark-100                : #1f2041;
+$dark-75                 : rgba(#1f2041,.75);
+$dark-50                 : rgba(#1f2041,.5);
+$dark-25                 : rgba(#1f2041,.25);
+$dark-05                 : rgba(#1f2041,.05);
+$purple-color            : #bc9cff;
+$purple-color2           : #8BA4F9;
+$green-color             : #6fcf97;
+$invalid-color           : #f00; //цвет для неправильно введенного значения
+$input-background        : rgba(255,255,255,0.25);
+$toxin-body-background   : inherit;
+$gradient                : linear-gradient(180deg, $purple-color 0%, $purple-color2 100%);
+$gradient2               : linear-gradient(180deg, rgba($purple-color, .5) 0%, rgba($purple-color2, .5) 100%);
+$white-color             :#FFF;
+$gray-color              :#AAA;
+//animation
+$duration                : .6s; // время анимаций
+
+// Size
+$mainFontColor           : $dark-75;
+$mainFontSize            : 14px;
+$materialFontSize        : 24px;
+$mainFontWeight          : 400;
+$mainLineHeight          : 24px;
+
+// Media
+$maxDesktopWidth         : 1920px;
+$desktopWidth            : 1280px;
+$smDesktopWidth          : 1024px; //было 980px
+$tableWidth              : 768px;
+$phoneWidth              : 480px;
+$smPhoneWidth            : 320px;

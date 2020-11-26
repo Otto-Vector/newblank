@@ -8,28 +8,28 @@ var path = {
         css: 'assets/build/css/',
         img: 'assets/build/img/',
         fonts: 'assets/build/fonts/',
-        jadeFrom: 'assets/src/jade/',
-        jadeToHtml: 'assets/src/',
+        pugFrom: 'assets/src/',
+        pugToHtml: 'assets/src/',
         json: 'assets/build/json',
         php: 'assets/build/'
     },
     src: {
-        html: 'assets/src/*.html',
-        js: 'assets/src/js/main.js',
-        style: 'assets/src/style/main.scss',
+        html: 'assets/src/templates/blocks/index/*.html',
+        js: 'assets/src/main.js',
+        style: 'assets/src/main.scss',
         img: 'assets/src/img/**/*.*',
         fonts: 'assets/src/fonts/**/*.*',
-        jade: 'assets/src/jade/**/*.jade',
+        pug: 'assets/src/**/*.pug',
         json: 'assets/src/json/**/*.json',
         php: 'assets/src/**/*.php'
     },
     watch: {
         html: 'assets/src/**/*.html',
-        js: 'assets/src/js/**/*.js',
-        css: 'assets/src/style/**/*.+(scss|sass)',
+        js: 'assets/src/**/*.js',
+        css: 'assets/src/**/*.+(scss|sass)',
         img: 'assets/src/img/**/*.*',
         fonts: 'assets/srs/fonts/**/*.*',
-        jade: 'assets/src/jade/**/*.jade',
+        pug: 'assets/src/**/*.pug',
         json: 'assets/src/json/**/*.json',
         php: 'assets/src/**/*.php'
     },
@@ -62,8 +62,8 @@ var gulp = require('gulp'),  // подключаем Gulp
     pngquant = require('imagemin-pngquant'), // плагин для сжатия png
     rimraf = require('gulp-rimraf'), // плагин для удаления файлов и каталогов
     rename = require('gulp-rename'),
-    jade = require('gulp-pug'), // плагин для конвертации JADE в HTML
-    jadeInheritance = require('gulp-pug-inheritance'), // аппаратная поддержка конвертации при больших объёмах файлов
+    pug = require('gulp-pug'), // плагин для конвертации pug в HTML
+    pugInheritance = require('gulp-pug-inheritance'), // аппаратная поддержка конвертации при больших объёмах файлов
     jsonminify = require('gulp-jsonminify'), // минификация json файлов
     htmlmin = require('gulp-htmlmin'); // минификатор html
 
@@ -85,15 +85,15 @@ gulp.task('html:build', function () {
 });
 
 
-//конвертация JADE в html///////////////////////////////////////////
-gulp.task('jade:build', function() {
-  return gulp.src(path.src.jade)
+//конвертация pug в html///////////////////////////////////////////
+gulp.task('pug:build', function() {
+  return gulp.src(path.src.pug)
     .pipe(plumber()) // для отслеживания ошибок
-    .pipe(jadeInheritance({basedir: path.build.jadeFrom})) // для ускорения 
-    .pipe(jade(
+    .pipe(pugInheritance({basedir: path.build.pugFrom})) // для ускорения 
+    .pipe(pug(
       {pretty: true} // для табулятивной разметки: адекватный просмотр перед минификацией
       ))
-    .pipe(gulp.dest(path.build.jadeToHtml))
+    .pipe(gulp.dest(path.build.pugToHtml))
     .pipe(webserver.reload({ stream: true })); // перезагрузка сервера
 });
 
@@ -186,7 +186,7 @@ gulp.task('cache:clear', function () {
 gulp.task('build',
     gulp.series('clean:build',
         gulp.parallel(
-            'jade:build',
+            'pug:build',
             'html:build',
             'css:build',
             'js:build',
@@ -200,7 +200,7 @@ gulp.task('build',
 
 // запуск задач при изменении файлов
 gulp.task('watch', function () {
-    gulp.watch(path.watch.jade, gulp.series('jade:build'));
+    gulp.watch(path.watch.pug, gulp.series('pug:build'));
     gulp.watch(path.watch.html, gulp.series('html:build'));
     gulp.watch(path.watch.css, gulp.series('css:build'));
     gulp.watch(path.watch.js, gulp.series('js:build'));
